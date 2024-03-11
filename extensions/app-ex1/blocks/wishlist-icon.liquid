@@ -1,0 +1,54 @@
+<head>
+<title>Wishlist Button</title>
+<style>
+/* Style for the button */
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-decoration: none;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Style for the icon */
+.button img {
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+/* Hover effect */
+.button:hover {
+  background-color: #e9ecef;
+}
+</style>
+
+</head>
+<body>
+<!-- Button with wishlist icon -->
+<a href="#" class="button">
+  <img src="wishlist-icon.png" alt="Wishlist Icon" width="20" height="20">
+  Add to Wishlist
+</a>
+</body>
+
+
+
+
+
+
+{% schema %}
+{
+  "name": "Wish List",
+  "target": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "product", "autofill": true },
+    { "type": "color", "id": "colour", "label": "Star Colour", "default": "#ff0000" }
+  ]
+}
+{% endschema %}
+

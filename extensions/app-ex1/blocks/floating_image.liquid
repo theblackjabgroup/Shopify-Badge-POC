@@ -1,0 +1,86 @@
+{% comment %} <script src="{{ 'custom2.js' | asset_url }}" async></script> {% endcomment %}
+<script src="https://code.jquery.com/jquery-3.7.1.slim.js" ></script>
+
+
+<div id = "abcd" style="position: fixed; bottom: 0; right: 0">
+    {{ 'thumbs-up.png' | asset_url | img_tag }}
+</div>
+
+<script>
+
+  if (typeof jQuery != 'undefined') {
+    console.log('jQuery is loaded!');
+} else {
+    console.log('jQuery is not loaded!');
+}
+
+$(document).on('click', '#my-button', function() {
+  console.log('Button clicked1!');
+});
+
+  $(document).ready(function() {
+    // Your jQuery code here
+   
+      console.log('Page is ready!');
+
+  
+  });
+  </script> 
+
+  <script>
+    $(document).ready(function() {
+
+      console.log('Page is ready!');
+
+      if (typeof jQuery != 'undefined') {
+        console.log('jQuery is loaded!');
+    } else {
+        console.log('jQuery is not loaded!');
+    }
+
+      var productImages = [];
+      $('img').each(function() {
+        var $img = $(this);
+        // Check if the image is within a container that typically holds product images
+        if ($img.closest('.product-container').length > 0 || $img.closest('.product').length > 0) {
+          var imageUrl = $img.attr('src');
+          productImages.push(imageUrl);
+        }
+      });
+  
+      console.log(productImages); // Output the list of image URLs to the console
+
+
+    {% comment %} var products = [];
+    $('img').each(function() {
+      var $img = $(this);
+      // Check if the image is within a container that typically holds product images
+      var $productContainer = $img.closest('.product-container');
+      if ($productContainer.length > 0) {
+        var product = {};
+        product.imageUrl = $img.attr('src');
+        // Find product information within the container
+        product.name = $productContainer.find('.product-name').text();
+        product.price = $productContainer.find('.product-price').text();
+        products.push(product);
+      }
+    }); {% endcomment %}
+
+    console.log(products);
+    });
+  </script>
+
+<button id="my-button">Click Me</button>
+<button onclick="handleClick()">Click Me2</button>
+
+
+
+
+
+{% schema %}
+  {
+    "name": "App Embed",
+    "target": "body",
+    "settings": []
+  }
+{% endschema %}
