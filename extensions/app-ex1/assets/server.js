@@ -5,7 +5,7 @@ const cors = require('cors');
 
 app.use(bodyParser.json());
 app.use(cors({
-    origin: 'https://poc-v2.myshopify.com', 
+    origin: '*', 
     methods: ['GET', 'POST'], 
     credentials: true 
   }));
@@ -21,7 +21,6 @@ app.post('/api/data', (req, res) => {
   res.json({ message: 'JSON data received successfully' });
   res.redirect('/api/data');
 });
-
 
 app.get('/api/data', (req, res) => {
     const dataToUse = receivedData || {};
