@@ -2,10 +2,15 @@ document.addEventListener('DOMContentLoaded', function () {
   bdgs_finditems();
 });
 
+//dom-load -> bdgs_finditems (get all the images)-> identifyProductfromReq -> decodeJson & addBadge  -> my_badge
+
+  
+
 async function decodeJson() {
   try {
     // Make an HTTP GET request to the server-side endpoint
     const response = await fetch('http://localhost:3000/api/data');
+    // get the products that need badge
 
     if (!response.ok) {
       throw new Error('Network response was not ok');
@@ -57,23 +62,24 @@ function bdgs_finditems() {
     s = document.querySelectorAll(
       'a[href*="/products/"]:not([href*=".jp"]):not([href*=".JP"]):not([href*=".png"]):not([href*=".PNG"]):not([href*="facebook.com"]):not([href*="twitter.com"]):not([href*="pinterest.com"]):not([href*="mailto:"])'
     ),
+    // find the location of the images
     a = 0;
     a < s.length;
     a++
   ) {
-    console.log('s[a] ', s[a]);
+    console.log('s[a] ', s[a]); // print each of the images
     var l;
     if (0 < (g = s[a].getAttribute('href').split('/'))[g.length - 1].split(/[?#]/)[0].length) {
       l = 1;
     } else {
-      l = 2;
+      l = 2; // l is frm where to extract product name ,second to last or third to last
     }
     var p = g[g.length - l].split(/[?#]/)[0];
     var t = decodeURI(p); // t is the product name eg: Test
     let parentElement = s[a].parentElement; 
     var closestImgDOM;
     var imgFound = false;
-    while (parentElement) {
+    while (parentElement) { //check if image is there
       closestImgDOM = parentElement.querySelector(
         'img[src*="/products/"]:not([class*="not-abel"]), img[data-src*="/products/"]:not([class*="not-label"]), img[src*="/no-image"], img[data-src*="/no-image"], img[src*="/products/"], img[srcset*="/products/"][srcset*="/cdn.shopify.com/s/files/"], img[src*="/cdn.shopify.com/s/files/"], source[data-srcset*="/products/"],  source[data-srcset*="/cdn.shopify.com/s/files/"], source[data-srcset*="/cdn/shop/files/"],  img[data-srcset*="/cdn.shopify.com/s/files/"],  img[src*="/product_img/"],  img[src*="/cdn/shop/files/"],  img[srcset*="/cdn/shop/files/"], img[srcset*="/cdn/shop/products/"], [style*="/products/"], img[src*="%2Fproducts%2F"]'
       );
@@ -89,7 +95,7 @@ function bdgs_finditems() {
       domArray.push(closestImgDOM);
       domMAP.set(t, domArray);
     } else {
-      domMAP.set(t, [closestImgDOM]);
+      domMAP.set(t, [closestImgDOM]); // add a mapping of product name and image
     }
   }
   console.log("domMap ", domMAP);
