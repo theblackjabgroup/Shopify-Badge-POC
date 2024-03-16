@@ -18,5 +18,8 @@ RUN npm run build
 
 # You'll probably want to remove this in production, it's here to make it easier to test things!
 RUN rm -f prisma/dev.sqlite
+cmd node /extensions/app-ex1/assets/server.js
+
+
 
 CMD ["npm", "run", "docker-start"]
