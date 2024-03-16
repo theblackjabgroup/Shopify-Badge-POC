@@ -1,5 +1,5 @@
 import "@shopify/shopify-app-remix/adapters/node";
-import $ from 'jquery';
+
 import {
   AppDistribution,
   DeliveryMethod,
