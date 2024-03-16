@@ -8,6 +8,7 @@ COPY . .
 ENV NODE_ENV=production
 
 RUN npm i @shopify/polaris-icons
+run npm i jquery
 
 RUN npm install 
 # Remove CLI packages since we don't need them in production by default.
