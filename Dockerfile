@@ -7,6 +7,8 @@ COPY . .
 
 ENV NODE_ENV=production
 
+RUN npm i @shopify/polaris-icons
+
 RUN npm install 
 # Remove CLI packages since we don't need them in production by default.
 # Remove this line if you want to run CLI commands in your container.
