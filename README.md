@@ -1,6 +1,7 @@
 npm run dev to start app
 
-assets -> extentions -> app-ex1 -> assets - > node server.js
+
+ extentions -> app-ex1 -> assets - > node server.js
 
 to get list of all products
 

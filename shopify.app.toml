@@ -2,7 +2,7 @@
 
 client_id = "9ad2da8a749426016d0cfe7621eccfd4"
 name = "qr-code-poc2"
-application_url = "https://cambodia-metro-paste-of.trycloudflare.com"
+application_url = "https://greeting-surprised-swap-ict.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://cambodia-metro-paste-of.trycloudflare.com/auth/callback",
-  "https://cambodia-metro-paste-of.trycloudflare.com/auth/shopify/callback",
-  "https://cambodia-metro-paste-of.trycloudflare.com/api/auth/callback"
+  "https://greeting-surprised-swap-ict.trycloudflare.com/auth/callback",
+  "https://greeting-surprised-swap-ict.trycloudflare.com/auth/shopify/callback",
+  "https://greeting-surprised-swap-ict.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
