@@ -1,13 +1,14 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "9ad2da8a749426016d0cfe7621eccfd4"
-name = "qr-code-poc2"
-application_url = "https://greeting-surprised-swap-ict.trycloudflare.com"
+client_id = "0ad124c3beb941a3463dba4a5965f6f8"
+name = "v4-a"
+handle = "v4-a"
+application_url = "https://reuters-subtle-onto-lab.trycloudflare.com"
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
-dev_store_url = "poc-v2.myshopify.com"
+dev_store_url = "anuragdev-store.myshopify.com"
 include_config_on_deploy = true
 
 [access_scopes]
@@ -16,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://greeting-surprised-swap-ict.trycloudflare.com/auth/callback",
-  "https://greeting-surprised-swap-ict.trycloudflare.com/auth/shopify/callback",
-  "https://greeting-surprised-swap-ict.trycloudflare.com/api/auth/callback"
+  "https://reuters-subtle-onto-lab.trycloudflare.com/auth/callback",
+  "https://reuters-subtle-onto-lab.trycloudflare.com/auth/shopify/callback",
+  "https://reuters-subtle-onto-lab.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
