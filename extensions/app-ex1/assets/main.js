@@ -1,12 +1,26 @@
+
 document.addEventListener('DOMContentLoaded', function () {
   bdgs_finditems();
+  logMessage();
 });
 
+async function logMessage()
+{
+  try{
+    const response = await fetch('https://aerial-pork-salmon-difficult.trycloudflare.com/app/api')
+    const obj = await response.json();
+    console.log("Response recieved from App", obj);
+  }
+  catch (error) {    
+    console.error('There was a problem in logMessage', error);
+  }
+}
 async function decodeJson() {
   try {
     // Make an HTTP GET request to the server-side endpoint
-    const response = await fetch('http://localhost:3000/api/data');
-
+    const response = await fetch('https://aerial-pork-salmon-difficult.trycloudflare.com/app/api');
+    
+    console.log("Decode Json was called");
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -22,6 +36,7 @@ async function decodeJson() {
 }
 
 function addBadge(productDOM) {
+  console.log("add badge was called");
   for (var idx = 0; idx < productDOM.length; idx++) {
     const imgTag = productDOM[idx].querySelectorAll('img');
     console.log('productDOM[idx] ', productDOM[idx]);
@@ -42,6 +57,7 @@ function identifyProductfromReq() {
         addBadge(domMAP.get(edges[index].node.handle));
       }
     }
+    console.log("identifyProductfromReq was called and seems ok");
   }).catch(error => {
     console.error('Error fetching JSON in identifyProductfromReq:', error);
   });
@@ -91,10 +107,13 @@ function bdgs_finditems() {
     }
   }
   console.log("domMap ", domMAP);
+  console.log("bdgs function worked ok, about to call identify");
   identifyProductfromReq();
 }
 
 function my_badge(imgNode) {
+
+  console.log("my badge was called")
   var newDiv = document.createElement('div');
   newDiv.className = 'product-image-container';
   var labelImage = document.createElement('div');
