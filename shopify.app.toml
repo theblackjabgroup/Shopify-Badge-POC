@@ -2,7 +2,7 @@
 
 client_id = "9ad2da8a749426016d0cfe7621eccfd4"
 name = "qr-code-poc2"
-application_url = "https://professional-checked-runtime-apple.trycloudflare.com"
+application_url = "https://collectors-plans-introductory-georgia.trycloudflare.com"
 embedded = true
 
 [build]
@@ -12,13 +12,13 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "write_products"
+scopes = "read_product_listings,write_metaobjects,write_products"
 
 [auth]
 redirect_urls = [
-  "https://professional-checked-runtime-apple.trycloudflare.com/auth/callback",
-  "https://professional-checked-runtime-apple.trycloudflare.com/auth/shopify/callback",
-  "https://professional-checked-runtime-apple.trycloudflare.com/api/auth/callback"
+  "https://collectors-plans-introductory-georgia.trycloudflare.com/auth/callback",
+  "https://collectors-plans-introductory-georgia.trycloudflare.com/auth/shopify/callback",
+  "https://collectors-plans-introductory-georgia.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

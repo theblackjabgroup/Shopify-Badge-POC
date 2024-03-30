@@ -1,6 +1,7 @@
 import { json } from "@remix-run/node";
 import { useLoaderData, Link, useNavigate } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
+
 import {
   Card,
   EmptyState,

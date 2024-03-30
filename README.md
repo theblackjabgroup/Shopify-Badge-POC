@@ -1,13 +1,31 @@
-npm run dev to start app
+1) npm run dev 
+
+to start app
 
 New branch
 
- extentions -> app-ex1 -> assets - > node server.js
+ 2) extentions -> app-ex1 -> assets - > node server.js
 
 to get list of all products
 
 1. When you do npm run dev then generate a graphql server link(eg: http://localhost:3457/graphiql)
 2. Go to this link and execute this query 
+
+query {
+  products(first: 10, reverse: true) {
+    edges {
+      node {
+        id
+        title
+
+        }
+      }
+    }
+  }
+
+  OR
+
+
 query {
   products(first: 10, reverse: true) {
     edges {
@@ -27,6 +45,7 @@ query {
       }
     }
   }
+
 }
 3. You will get a JSON which you can paste in POSTMAN
 
