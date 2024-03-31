@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
   logMessage();
 });
 
+
+
+
 async function logMessage()
 {
   try{
