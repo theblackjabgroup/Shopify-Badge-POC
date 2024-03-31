@@ -2,7 +2,7 @@
 
 client_id = "9ad2da8a749426016d0cfe7621eccfd4"
 name = "qr-code-poc2"
-application_url = "https://aerial-pork-salmon-difficult.trycloudflare.com"
+application_url = "https://violation-agreement-recovered-institutional.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "read_product_listings,write_metaobjects,write_products"
 
 [auth]
 redirect_urls = [
-  "https://aerial-pork-salmon-difficult.trycloudflare.com/auth/callback",
-  "https://aerial-pork-salmon-difficult.trycloudflare.com/auth/shopify/callback",
-  "https://aerial-pork-salmon-difficult.trycloudflare.com/api/auth/callback"
+  "https://violation-agreement-recovered-institutional.trycloudflare.com/auth/callback",
+  "https://violation-agreement-recovered-institutional.trycloudflare.com/auth/shopify/callback",
+  "https://violation-agreement-recovered-institutional.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
