@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 async function logMessage()
 {
   try{
-    const response = await fetch('https://aerial-pork-salmon-difficult.trycloudflare.com/app/api')
+    const response = await fetch('https://lobster-app-ax5bs.ondigitalocean.app/app/api')
     const obj = await response.json();
     console.log("Response recieved from App", obj);
   }
@@ -18,7 +18,7 @@ async function logMessage()
 async function decodeJson() {
   try {
     // Make an HTTP GET request to the server-side endpoint
-    const response = await fetch('https://aerial-pork-salmon-difficult.trycloudflare.com/app/api');
+    const response = await fetch('https://lobster-app-ax5bs.ondigitalocean.app/app/api');
     
     console.log("Decode Json was called");
     if (!response.ok) {
