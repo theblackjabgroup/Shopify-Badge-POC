@@ -1,4 +1,20 @@
 
+---------------------------------------------------------------
+
+How to deploy app to digital ocean and test
+
+floating.liquid -> main.js -> app.api.jsx
+
+1) environment variable set host to blank -- image as env-variables-dig-ocean
+2) main js fetch url change to the url from digital liquid
+3) npm run deploy must be run
+4) partner account change url to digital ocean url -- image as shopify-partner-setup-for-digliq
+5) push code and start digital ocean pipeline
+6) postman post to new url -- postman-call-app-on-dig-liq
+
+
+
+
 ----------------------------------------------------------------
 
 In this main.js calls app.api.jsx, so we onyly deploy 1 APP

@@ -2,7 +2,7 @@
 
 client_id = "9ad2da8a749426016d0cfe7621eccfd4"
 name = "qr-code-poc2"
-application_url = "https://bidding-vendor-mauritius-dating.trycloudflare.com"
+application_url = "https://starting-polished-company-packed.trycloudflare.com"
 embedded = true
 
 [build]
@@ -16,9 +16,9 @@ scopes = "read_product_listings,write_metaobjects,write_products"
 
 [auth]
 redirect_urls = [
-  "https://bidding-vendor-mauritius-dating.trycloudflare.com/auth/callback",
-  "https://bidding-vendor-mauritius-dating.trycloudflare.com/auth/shopify/callback",
-  "https://bidding-vendor-mauritius-dating.trycloudflare.com/api/auth/callback"
+  "https://starting-polished-company-packed.trycloudflare.com/auth/callback",
+  "https://starting-polished-company-packed.trycloudflare.com/auth/shopify/callback",
+  "https://starting-polished-company-packed.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
