@@ -1,11 +1,9 @@
 import { json } from "@remix-run/node";
 import { Link, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
-import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 import { boundary } from "@shopify/shopify-app-remix/server";
 import { AppProvider } from "@shopify/shopify-app-remix/react";
+import "@shopify/polaris/build/esm/styles.css";
 import { authenticate } from "../shopify.server";
-
-export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
@@ -22,7 +20,6 @@ export default function App() {
         <Link to="/app" rel="home">
           Home
         </Link>
-        <Link to="/app/additional">Additional page</Link>
         <Link to="/app/payments">Payments</Link>
       </ui-nav-menu>
       <Outlet />

@@ -1,17 +1,14 @@
 import "@shopify/shopify-app-remix/adapters/node";
-
 import {
   AppDistribution,
   DeliveryMethod,
   shopifyApp,
   LATEST_API_VERSION,
   BillingInterval
-
 } from "@shopify/shopify-app-remix/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-01";
 import prisma from "./db.server";
-
 
 
 export const MONTHLY_PLAN= 'Monthly Subscription'
@@ -38,7 +35,6 @@ const shopify = shopifyApp({
       shopify.registerWebhooks({ session });
     },
   },
-
   billing : {
     [MONTHLY_PLAN]: {
       amount: 10,
@@ -51,7 +47,6 @@ const shopify = shopifyApp({
       interval: BillingInterval.Annual
     },
   },
-
   future: {
     v3_webhookAdminContext: true,
     v3_authenticatePublic: true,

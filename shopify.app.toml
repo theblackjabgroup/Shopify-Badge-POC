@@ -1,8 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "9ad2da8a749426016d0cfe7621eccfd4"
-name = "qr-code-poc2"
-application_url = "https://bidding-vendor-mauritius-dating.trycloudflare.com"
+client_id = "5d85152038999779e3ca010b8f6992d1"
+name = "v1-a"
+handle = "v1-a-2"
+application_url = "https://surprised-savannah-hydraulic-edwards.trycloudflare.com"
 embedded = true
 
 [build]
@@ -12,13 +13,13 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_product_listings,write_metaobjects,write_products"
+scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://bidding-vendor-mauritius-dating.trycloudflare.com/auth/callback",
-  "https://bidding-vendor-mauritius-dating.trycloudflare.com/auth/shopify/callback",
-  "https://bidding-vendor-mauritius-dating.trycloudflare.com/api/auth/callback"
+  "https://surprised-savannah-hydraulic-edwards.trycloudflare.com/auth/callback",
+  "https://surprised-savannah-hydraulic-edwards.trycloudflare.com/auth/shopify/callback",
+  "https://surprised-savannah-hydraulic-edwards.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
