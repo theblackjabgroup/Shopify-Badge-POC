@@ -1,6 +1,26 @@
 # Shopify App Template - Remix
 
+
 This is a template for building a [Shopify app](https://shopify.dev/docs/apps/getting-started) using the [Remix](https://remix.run) framework.
+=======
+---------------------------------------------------------------
+
+How to deploy app to digital ocean and test
+
+floating.liquid -> main.js -> app.api.jsx
+
+1) environment variable set host to blank -- image as env-variables-dig-ocean
+2) main js fetch url change to the url from digital liquid
+3) npm run deploy must be run
+4) partner account change url to digital ocean url -- image as shopify-partner-setup-for-digliq
+5) push code and start digital ocean pipeline
+6) postman post to new url -- postman-call-app-on-dig-liq
+
+
+
+
+----------------------------------------------------------------
+
 
 Rather than cloning this repo, you can use your preferred package manager and the Shopify CLI with [these steps](https://shopify.dev/docs/apps/getting-started/create).
 

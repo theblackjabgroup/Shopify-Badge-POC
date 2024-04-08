@@ -14,7 +14,11 @@ export async function loader({ request }) {
     onFailure: async () => billing.request({
       plan: plan_item === 'monthly' ? MONTHLY_PLAN : ANNUAL_PLAN,
       isTest: true,
+
       returnUrl: `https://admin.shopify.com/store/poc-v2/apps/${process.env.APP_NAME}/app`,
+
+      returnUrl: `https://admin.shopify.com/store/${myShop}/apps/${process.env.APP_NAME}/app/payments`,
+
     }),
   });
   if (billingResult && billingResult.success) {
