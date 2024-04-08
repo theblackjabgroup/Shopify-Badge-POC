@@ -3,7 +3,7 @@
 client_id = "4ec651f5a75504841f4675e92d8366e4"
 name = "extensive-enterprise-app"
 handle = "extensive-enterprise-app-9"
-application_url = "https://depends-grocery-reaching-monte.trycloudflare.com"
+application_url = "https://areas-album-kill-fair.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://depends-grocery-reaching-monte.trycloudflare.com/auth/callback",
-  "https://depends-grocery-reaching-monte.trycloudflare.com/auth/shopify/callback",
-  "https://depends-grocery-reaching-monte.trycloudflare.com/api/auth/callback"
+  "https://areas-album-kill-fair.trycloudflare.com/auth/callback",
+  "https://areas-album-kill-fair.trycloudflare.com/auth/shopify/callback",
+  "https://areas-album-kill-fair.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
