@@ -1,8 +1,15 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
+
+client_id = "4ec651f5a75504841f4675e92d8366e4"
+name = "extensive-enterprise-app"
+handle = "extensive-enterprise-app-9"
+application_url = "https://areas-album-kill-fair.trycloudflare.com"
+=======
 client_id = "9ad2da8a749426016d0cfe7621eccfd4"
 name = "qr-code-poc2"
 application_url = "https://starting-polished-company-packed.trycloudflare.com"
+
 embedded = true
 
 [build]
@@ -12,17 +19,23 @@ include_config_on_deploy = true
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_product_listings,write_metaobjects,write_products"
+scopes = "write_products"
 
 [auth]
 redirect_urls = [
+
+  "https://areas-album-kill-fair.trycloudflare.com/auth/callback",
+  "https://areas-album-kill-fair.trycloudflare.com/auth/shopify/callback",
+  "https://areas-album-kill-fair.trycloudflare.com/api/auth/callback"
+=======
   "https://starting-polished-company-packed.trycloudflare.com/auth/callback",
   "https://starting-polished-company-packed.trycloudflare.com/auth/shopify/callback",
   "https://starting-polished-company-packed.trycloudflare.com/api/auth/callback"
+
 ]
 
 [webhooks]
-api_version = "2024-01"
+api_version = "2024-04"
 
 [pos]
 embedded = false

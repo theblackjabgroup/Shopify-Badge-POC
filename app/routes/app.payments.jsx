@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Page, Card, Layout, ButtonGroup, Button, Text, List, InlineStack, CalloutCard } from '@shopify/polaris';
 import { ANNUAL_PLAN, MONTHLY_PLAN, authenticate } from '../shopify.server';
 import { useLoaderData } from '@remix-run/react';
-import {json} from '@remix-run/node'
+import { json } from '@remix-run/node';
 
 export async function loader({ request }) {
   const { billing } = await authenticate.admin(request);
@@ -14,7 +14,8 @@ export async function loader({ request }) {
       isTest: true,
       // Instead of redirecting on failure, just catch the error
       onFailure: () => {
-        throw new Error('No active plan');
+        console.log('Shop does not have any active plans.');
+        return json({ billing, plan: { name: "Free" } });
       },
     });
 
@@ -24,13 +25,9 @@ export async function loader({ request }) {
     return json({ billing, plan: subscription });
 
   } catch (error) {
-    // If the shop does not have an active plan, return an empty plan object
-    if (error.message === 'No active plan') {
-      console.log('Shop does not have any active plans.');
-      return json({ billing, plan: { name: "Free" } });
-    }
-    // If there is another error, rethrow it
-    throw error;
+    // If there is an error, return an empty plan object
+    console.error('Error fetching plan:', error);
+    return json({ billing, plan: { name: "Free" } });
   }
 }
 
@@ -41,6 +38,8 @@ export default function PaymentsPage() {
 
   // Determine if the user is on a paid plan
   const isOnPaidPlan = plan.name !== 'Free';
+  const upgradeButtonUrl = `/app/upgrade?plan_item=${plan_item}`;
+  const cancelButtonUrl = `/app/cancel?plan_item=${plan_item}`;
 
   const handlePlanChange = (selected) => {
     setPlan(selected);
@@ -85,9 +84,6 @@ export default function PaymentsPage() {
                   <List.Item>1 Sales pop-up for all items</List.Item>
                   <List.Item>50+ Designed Library Presets</List.Item>
                 </List>
-                <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                  <Button url='/app/upgrade' variant='primary'>Start Journey</Button>
-                </div>
               </div>
               <div style={{ padding: '20px', border: '3px solid ', borderRadius: '10px', marginLeft: '60px', height: '400px', width: '300px', background: paidBackgroundColor }}>
                 <Text variant='headingXl' fontWeight='bold'>Paid</Text>
@@ -101,29 +97,29 @@ export default function PaymentsPage() {
                   <List.Item>Labels/Badges for available & sold out items</List.Item>
                 </List>
                 <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                  <Button url='/app/upgrade' variant='primary'>Start Journey</Button>
+                  <Button disabled={isOnPaidPlan} url={upgradeButtonUrl} variant='primary'>Start Journey</Button>
                 </div>
               </div>
             </InlineStack>
           </Layout.Section>
           <Layout.Section>
             <CalloutCard
-          title="Change your plan"
-          illustration="https://cdn.shopify.com/s/files/1/0583/6465/7734/files/tag.png?v=1705280535"
-          primaryAction={{
-            content: 'Change Plan',
-            url: '/app/cancel',
-          }}
-        >
-          { isOnPaidPlan ? (
-            <p>
-              You're currently on pro plan. All features are unlocked.
-            </p>
-          ) : (
-            <p>
-              You're currently on free plan. Upgrade to pro to unlock more features.
-            </p>
-          )}
+              title="Change your plan"
+              illustration="https://cdn.shopify.com/s/files/1/0583/6465/7734/files/tag.png?v=1705280535"
+              primaryAction={{
+                content: isOnPaidPlan ? "Cancel Plan" : "Upgrade Plan",
+                url: cancelButtonUrl
+              }}
+            >
+              {isOnPaidPlan ? (
+                <p>
+                  You're currently on pro plan. All features are unlocked.
+                </p>
+              ) : (
+                <p>
+                  You're currently on free plan. Upgrade to pro to unlock more features.
+                </p>
+              )}
             </CalloutCard>
           </Layout.Section>
         </Layout>
