@@ -3,7 +3,7 @@
 client_id = "4ec651f5a75504841f4675e92d8366e4"
 name = "extensive-enterprise-app"
 handle = "extensive-enterprise-app-9"
-application_url = "https://shaved-ks-disciplines-grew.trycloudflare.com"
+application_url = "https://gilbert-sunglasses-elizabeth-configuration.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://shaved-ks-disciplines-grew.trycloudflare.com/auth/callback",
-  "https://shaved-ks-disciplines-grew.trycloudflare.com/auth/shopify/callback",
-  "https://shaved-ks-disciplines-grew.trycloudflare.com/api/auth/callback"
+  "https://gilbert-sunglasses-elizabeth-configuration.trycloudflare.com/auth/callback",
+  "https://gilbert-sunglasses-elizabeth-configuration.trycloudflare.com/auth/shopify/callback",
+  "https://gilbert-sunglasses-elizabeth-configuration.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
