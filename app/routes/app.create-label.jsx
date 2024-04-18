@@ -1,43 +1,82 @@
-import React, { useState, useCallback } from 'react';
-import { Page, TextField,Text, Icon, RadioButton, Card,Link, Button,Checkbox } from '@shopify/polaris';
+import React, { useState, useCallback ,useEffect} from 'react';
+import { Page, TextField,Text, Icon, RadioButton, Card,Link, Button,Checkbox,Thumbnail } from '@shopify/polaris';
 import { ButtonPressIcon } from '@shopify/polaris-icons';
 import { useLoaderData } from '@remix-run/react';
 import { ANNUAL_PLAN, MONTHLY_PLAN, authenticate } from '../shopify.server';
 import { json } from '@remix-run/node';
 
-
 export async function loader({ request }) {
   const { billing } = await authenticate.admin(request);
 
+  // Initialize imageUrl and plan variables
+  let imageUrl = '';
+  let plan = { name: "Free" };
+
+  // Fetch the product image URL from Shopify's GraphQL API
   try {
-    // Attempt to check if the shop has an active payment for any plan
+    const query = JSON.stringify({
+      query: `
+        {
+          product(id: "gid://shopify/Product/8921566839079") {
+            images(first: 1) {
+              edges {
+                node {
+                  originalSrc
+                }
+              }
+            }
+          }
+        }
+      `
+    });
+
+    const fetchOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': `${process.env.X_SHOPIFY_ACCESS_TOKEN}`,
+      },
+      body: query,
+    };
+
+    const response = await fetch('https://poc-v2.myshopify.com/admin/api/2024-04/graphql.json', fetchOptions);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    imageUrl = data.data.product.images.edges[0].node.originalSrc;
+  } catch (error) {
+    console.error('Error fetching product image:', error);
+  }
+
+  // Check if the shop has an active payment for any plan
+  try {
     const billingCheck = await billing.require({
       plans: [MONTHLY_PLAN, ANNUAL_PLAN],
       isTest: true,
-      // Instead of redirecting on failure, just catch the error
       onFailure: () => {
         console.log('Shop does not have any active plans.');
-        return json({ billing, plan: { name: "Free" } });
+        return json({ billing});
       },
     });
 
-    // If the shop has an active subscription, log and return the details
     const subscription = billingCheck.appSubscriptions[0];
     console.log(`Shop is on ${subscription.name} (id ${subscription.id})`);
-    return json({ billing, plan: subscription });
-
+    plan = subscription;
   } catch (error) {
-    // If there is an error, return an empty plan object
     console.error('Error fetching plan:', error);
-    return json({ billing, plan: { name: "Free" } });
   }
-}
 
+  // Return both imageUrl and plan in the JSON response
+  return json({ imageUrl, plan });
+}
 export default function CreateLabelPage() {
   // States for each checkbox
-  const { plan } = useLoaderData();
+  const { plan, imageUrl } = useLoaderData();
+  console.log(imageUrl)
   const isOnPaidPlan = plan.name !== 'Free';
   const [formState, setFormState] = useState(plan);
+  const [selectImageState,setSelectImageState]=useState(plan)
   const [isProductPageChecked, setIsProductPageChecked] = useState(false);
   const [isHomePageChecked, setIsHomePageChecked] = useState(false);
   const [isCartPageChecked, setIsCartPageChecked] = useState(false);
@@ -63,7 +102,6 @@ export default function CreateLabelPage() {
   }, []);
 
 
-
   async function selectProduct() {
     const products = await window.shopify.resourcePicker({
       type: "product",
@@ -85,6 +123,32 @@ export default function CreateLabelPage() {
     }
   }
 
+  async function selectProductImage() {
+    const products = await window.shopify.resourcePicker({
+      type: "product",
+      action: "select", // customized action verb, either 'select' or 'add',
+    });
+  
+    if (products) {
+      const { images, id, title, handle } = products[0];
+  
+    // Extract the numerical part of the product ID
+    const numericalId = id.split('/').pop();
+
+    // Log the numerical part of the selected product's ID to the console
+    console.log("Selected product numerical ID:", numericalId);
+  
+      setSelectImageState({
+        ...selectImageState, // Use functional update to ensure we have the latest state
+        productId: id,
+        productTitle: title,
+        productHandle: handle,
+        productAlt: images[0]?.altText,
+        productImage: images[0]?.originalSrc,
+      });
+    }
+  }
+
   return (
     <Page title="Create Label">
       <div className='grid' style={{display: 'grid',gridTemplateColumns: '1.2fr 0.8fr',gap: '10px'}}>
@@ -94,6 +158,21 @@ export default function CreateLabelPage() {
                 Product View
             </Text>
           </Card>
+          <div style={{marginTop:'20px'}}>
+          <Card>        
+          <div style={{marginTop:'10px',marginBottom:'10px'}}>
+              <Button onClick={selectProductImage}>Select Product Image</Button>
+              <hr />
+            </div> 
+        {imageUrl && (
+          <div style={{marginLeft:'60px',padding:'10px'}}>
+            <img src={imageUrl} alt="Product" style={{ width: '400px', height: '300px' }} />
+          </div>
+        )}
+          </Card>
+          </div>
+
+
         </div>
         <div>
           <Card>
