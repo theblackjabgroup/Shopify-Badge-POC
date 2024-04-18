@@ -8,46 +8,7 @@ import { json } from '@remix-run/node';
 export async function loader({ request }) {
   const { billing } = await authenticate.admin(request);
 
-  // Initialize imageUrl and plan variables
-  let imageUrl = '';
   let plan = { name: "Free" };
-
-  // Fetch the product image URL from Shopify's GraphQL API
-  try {
-    const query = JSON.stringify({
-      query: `
-        {
-          product(id: "gid://shopify/Product/8921566839079") {
-            images(first: 1) {
-              edges {
-                node {
-                  originalSrc
-                }
-              }
-            }
-          }
-        }
-      `
-    });
-
-    const fetchOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': `${process.env.X_SHOPIFY_ACCESS_TOKEN}`,
-      },
-      body: query,
-    };
-
-    const response = await fetch('https://poc-v2.myshopify.com/admin/api/2024-04/graphql.json', fetchOptions);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    imageUrl = data.data.product.images.edges[0].node.originalSrc;
-  } catch (error) {
-    console.error('Error fetching product image:', error);
-  }
 
   // Check if the shop has an active payment for any plan
   try {
@@ -68,12 +29,11 @@ export async function loader({ request }) {
   }
 
   // Return both imageUrl and plan in the JSON response
-  return json({ imageUrl, plan });
+  return json({ plan });
 }
 export default function CreateLabelPage() {
   // States for each checkbox
-  const { plan, imageUrl } = useLoaderData();
-  console.log(imageUrl)
+  const { plan } = useLoaderData();
   const isOnPaidPlan = plan.name !== 'Free';
   const [formState, setFormState] = useState(plan);
   const [selectImageState,setSelectImageState]=useState(plan)
@@ -164,11 +124,11 @@ export default function CreateLabelPage() {
               <Button onClick={selectProductImage}>Select Product Image</Button>
               <hr />
             </div> 
-        {imageUrl && (
-          <div style={{marginLeft:'60px',padding:'10px'}}>
-            <img src={imageUrl} alt="Product" style={{ width: '400px', height: '300px' }} />
-          </div>
-        )}
+            {selectImageState.productImage && (
+  <div style={{marginLeft:'60px',padding:'10px'}}>
+    <img src={selectImageState.productImage} alt={selectImageState.productTitle} style={{ width: '400px', height: '300px' }} />
+  </div>
+)}
           </Card>
           </div>
 
