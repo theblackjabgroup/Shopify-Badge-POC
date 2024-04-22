@@ -1,9 +1,10 @@
 import React, { useState, useCallback ,useEffect} from 'react';
-import { Page, TextField,Text, Icon, RadioButton, Card,Link, Button,Checkbox,Thumbnail } from '@shopify/polaris';
+import { Page, TextField,Text, Icon, RadioButton, Card,Link, Button,Checkbox } from '@shopify/polaris';
 import { ButtonPressIcon } from '@shopify/polaris-icons';
 import { useLoaderData } from '@remix-run/react';
 import { ANNUAL_PLAN, MONTHLY_PLAN, authenticate } from '../shopify.server';
 import { json } from '@remix-run/node';
+
 
 export async function loader({ request }) {
   const { billing } = await authenticate.admin(request);
@@ -31,6 +32,43 @@ export async function loader({ request }) {
   // Return both imageUrl and plan in the JSON response
   return json({ plan });
 }
+const cdnUrl = "https://blackbyttcdn.blr1.digitaloceanspaces.com";
+
+function LabelProductMapping() {
+  const [imageUrls, setImageUrls] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(cdnUrl);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const xmlData = await response.text();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlData, "text/xml");
+
+        const results = Array.from(xmlDoc.querySelectorAll("Contents")).map(content => {
+          const keyText = content.querySelector("Key").textContent;
+          return {
+            label: keyText,
+            value: `${cdnUrl}/${keyText}`
+          };
+        });
+
+        setImageUrls(results);
+      } catch (error) {
+        console.error('Error fetching and parsing XML:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  return imageUrls;
+}
+
+
 export default function CreateLabelPage() {
   // States for each checkbox
   const { plan } = useLoaderData();
@@ -61,7 +99,12 @@ export default function CreateLabelPage() {
     // setAllImagesOnProductPageChecked(true);
   }, []);
 
+  const [showImages, setShowImages] = useState(false);
+  const imageUrls = LabelProductMapping();
 
+  const handleSelectLabelClick = () => {
+    setShowImages(true);
+  };
   async function selectProduct() {
     const products = await window.shopify.resourcePicker({
       type: "product",
@@ -140,9 +183,19 @@ export default function CreateLabelPage() {
                 Select and Optimize Label  
             </Text>
             <div style={{marginTop:'10px'}}>
-                <Button variant='primary' >Select Label<Icon source={ButtonPressIcon} tone="base"/></Button>
-                <hr />
-            </div>
+        <Button variant='primary' onClick={handleSelectLabelClick}>
+          Select Label<Icon source={ButtonPressIcon} tone="base"/>
+        </Button>
+        <hr />
+      </div>
+
+      {showImages && (
+        <div>
+          {imageUrls.map((image, index) => (
+            <img key={index} src={image.value} alt={image.label} style={{ maxWidth: '100px', margin: '5px' }} />
+          ))}
+        </div>
+      )}
             <div style={{marginTop:'10px',marginBottom:'10px'}}>
               <Button onClick={selectProduct}>Select Products</Button>
               <hr />

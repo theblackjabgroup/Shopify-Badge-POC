@@ -3,7 +3,7 @@
 client_id = "4ec651f5a75504841f4675e92d8366e4"
 name = "extensive-enterprise-app"
 handle = "extensive-enterprise-app-9"
-application_url = "https://goat-ds-thousands-tagged.trycloudflare.com"
+application_url = "https://waterproof-probability-task-thumb.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://goat-ds-thousands-tagged.trycloudflare.com/auth/callback",
-  "https://goat-ds-thousands-tagged.trycloudflare.com/auth/shopify/callback",
-  "https://goat-ds-thousands-tagged.trycloudflare.com/api/auth/callback"
+  "https://waterproof-probability-task-thumb.trycloudflare.com/auth/callback",
+  "https://waterproof-probability-task-thumb.trycloudflare.com/auth/shopify/callback",
+  "https://waterproof-probability-task-thumb.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

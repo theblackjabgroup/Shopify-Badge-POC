@@ -1,3 +1,4 @@
+// shopify.server.js
 import "@shopify/shopify-app-remix/adapters/node";
 import {
   AppDistribution,
@@ -10,8 +11,8 @@ import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prism
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-04";
 import prisma from "./db.server";
 
-export const MONTHLY_PLAN= 'Monthly Subscription'
- export const ANNUAL_PLAN= 'Annual Subscription'
+export const MONTHLY_PLAN = 'Monthly Subscription';
+export const ANNUAL_PLAN = 'Annual Subscription';
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
@@ -29,18 +30,18 @@ const shopify = shopifyApp({
       callbackUrl: "/webhooks",
     },
   },
-  billing : {
+  billing: {
     [MONTHLY_PLAN]: {
-    amount: 10,
-    currencyCode:'USD',
-    interval: BillingInterval.Every30Days
+      amount: 10,
+      currencyCode: 'USD',
+      interval: BillingInterval.Every30Days
     },
     [ANNUAL_PLAN]: {
-    amount: 100,
-    currencyCode:'USD',
-    interval: BillingInterval.Annual
+      amount: 100,
+      currencyCode: 'USD',
+      interval: BillingInterval.Annual
     },
-    },
+  },
   hooks: {
     afterAuth: async ({ session }) => {
       shopify.registerWebhooks({ session });
