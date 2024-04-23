@@ -1,5 +1,5 @@
 import React, { useState, useCallback ,useEffect} from 'react';
-import { Page, TextField,Text, Icon, RadioButton, Card,Link, Button,Checkbox } from '@shopify/polaris';
+import { Page,Select, TextField,Text, Icon, RadioButton, Card,Link, Button,Checkbox } from '@shopify/polaris';
 import { ButtonPressIcon } from '@shopify/polaris-icons';
 import { useLoaderData } from '@remix-run/react';
 import { ANNUAL_PLAN, MONTHLY_PLAN, authenticate } from '../shopify.server';
@@ -101,10 +101,17 @@ export default function CreateLabelPage() {
 
   const [showImages, setShowImages] = useState(false);
   const imageUrls = LabelProductMapping();
+  const [selectedLabelUrl, setSelectedLabelUrl] = useState('');
+
+  const handleLabelChange = (labelUrl) => {
+    setSelectedLabelUrl(labelUrl);
+  };
+
 
   const handleSelectLabelClick = () => {
-    setShowImages(true);
+    setShowImages(!showImages);
   };
+
   async function selectProduct() {
     const products = await window.shopify.resourcePicker({
       type: "product",
@@ -152,6 +159,12 @@ export default function CreateLabelPage() {
     }
   }
 
+  const options=
+  imageUrls.map((image, index) =>
+  (
+   <img key={index} src={image.value} alt={image.label} style={{ maxWidth: '100px', margin: '5px' }} />
+ ))
+
   return (
     <Page title="Create Label">
       <div className='grid' style={{display: 'grid',gridTemplateColumns: '1.2fr 0.8fr',gap: '10px'}}>
@@ -162,16 +175,28 @@ export default function CreateLabelPage() {
             </Text>
           </Card>
           <div style={{marginTop:'20px'}}>
+
           <Card>        
-          <div style={{marginTop:'10px',marginBottom:'10px'}}>
-              <Button onClick={selectProductImage}>Select Product Image</Button>
-              <hr />
+            <div style={{marginTop:'10px',marginBottom:'10px'}}>
+                <Button onClick={selectProductImage}>Select Product</Button>
+                <hr />
             </div> 
-            {selectImageState.productImage && (
-  <div style={{marginLeft:'60px',padding:'10px'}}>
+              {/* {selectImageState.productImage && (
+              <div style={{ position: 'relative', marginLeft: '60px', padding: '10px' }}>
+                <img src={selectImageState.productImage} alt={selectImageState.productTitle} style={{ width: '400px', height: '300px' }} />
+                {selectedLabelUrl && (
+                  <img src={selectedLabelUrl} alt="Selected Label" style={{ position: 'absolute', top: '0', right: '0', maxWidth: '100px' }} />
+                )}
+              </div>
+            )} */}
+{selectImageState.productImage ? (
+  <div style={{ position: 'relative', marginLeft: '60px', padding: '10px' }}>
     <img src={selectImageState.productImage} alt={selectImageState.productTitle} style={{ width: '400px', height: '300px' }} />
+    {selectedLabelUrl && (
+      <img src={selectedLabelUrl} alt="Selected Label" style={{ position: 'absolute', top: 'auto',left:'12px', maxWidth: '100px',}} />
+    )}
   </div>
-)}
+) : ''}
           </Card>
           </div>
 
@@ -190,12 +215,15 @@ export default function CreateLabelPage() {
       </div>
 
       {showImages && (
-        <div>
-          {imageUrls.map((image, index) => (
-            <img key={index} src={image.value} alt={image.label} style={{ maxWidth: '100px', margin: '5px' }} />
-          ))}
-        </div>
-      )}
+            <div>
+              {imageUrls.map((image, index) => (
+                <button key={index} onClick={() => handleLabelChange(image.value)} style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer' }}>
+                  <img src={image.value} alt={image.label} style={{ maxWidth: '100px', margin: '5px' }} />
+                </button>
+              ))}
+            </div>
+          )}
+
             <div style={{marginTop:'10px',marginBottom:'10px'}}>
               <Button onClick={selectProduct}>Select Products</Button>
               <hr />
