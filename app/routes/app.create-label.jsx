@@ -4,8 +4,11 @@ import { ButtonPressIcon } from '@shopify/polaris-icons';
 import { useLoaderData } from '@remix-run/react';
 import { ANNUAL_PLAN, MONTHLY_PLAN, authenticate } from '../shopify.server';
 import { json } from '@remix-run/node';
-
-
+import {
+  useSubmit,
+} from "@remix-run/react";
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
 export async function loader({ request }) {
   const { billing } = await authenticate.admin(request);
 
@@ -69,6 +72,63 @@ function LabelProductMapping() {
 }
 
 
+export async function action({ request }) {
+
+  const { session } = await authenticate.admin(request);
+  const { shop } = session; 
+
+  const formData = await request.formData();
+    const productHandle = formData.get('productHandle');
+    const labelName = formData.get('label_name');
+    const labelUrl = formData.get('label_url');
+
+    try {
+        // Check if a label already exists for the given productHandle and shop
+        const existingLabel = await prisma.label.findUnique({
+            where: {
+               // Composite key
+                    productHandle: productHandle,
+                    shop: shop
+                
+            }
+        });
+
+        if (existingLabel) {
+            // Update existing label
+            const updatedLabel = await prisma.label.update({
+                where: {
+                   
+                        productHandle: productHandle,
+                        shop: shop
+                    }
+                ,
+                data: {
+                    labelName: labelName,
+                    labelUrl: labelUrl
+                }
+            });
+            console.log("Updating existing label:", updatedLabel);
+        } else {
+            // Create new label
+            const newLabel = await prisma.label.create({
+                data: {
+                    productHandle: productHandle,
+                    labelName: labelName,
+                    labelUrl: labelUrl,
+                    shop: shop
+                }
+            });
+            console.log("Creating new label:", newLabel);
+        }
+
+        return json({ ok: true, message: "Label processed successfully." });
+    } catch (error) {
+        console.error("Error processing label:", error);
+        return new Response("Internal Server Error", error);
+    }
+}
+
+
 export default function CreateLabelPage() {
   // States for each checkbox
   const { plan } = useLoaderData();
@@ -102,11 +162,35 @@ export default function CreateLabelPage() {
   const [showImages, setShowImages] = useState(false);
   const imageUrls = LabelProductMapping();
   const [selectedLabelUrl, setSelectedLabelUrl] = useState('');
+  const [selectedLabelName,setSelectedLabelName]=useState('')
+
 
   const handleLabelChange = (labelUrl) => {
     setSelectedLabelUrl(labelUrl);
+
+    // Find the label object by its value (URL)
+    const selectedLabel = imageUrls.find(image => image.value === labelUrl);
+
+    // Log the label's URL and name to the console
+    if (selectedLabel) {
+      setSelectedLabelName(selectedLabel.label)
+      // console.log('Selected label URL:', selectedLabel.value);
+      // console.log('Selected label name:', selectedLabelName);
+      // console.log(selectImageState.productId)
+    }
   };
 
+  const submit = useSubmit();
+  function handleSave() {
+    
+    const data = {
+      "label_url": selectedLabelUrl,
+      "label_name": selectedLabelName || "",
+      "productHandle": selectImageState.productId,
+    };
+      submit(data, { method: "post" });
+      console.log(data)
+  }
 
   const handleSelectLabelClick = () => {
     setShowImages(!showImages);
@@ -159,11 +243,6 @@ export default function CreateLabelPage() {
     }
   }
 
-  const options=
-  imageUrls.map((image, index) =>
-  (
-   <img key={index} src={image.value} alt={image.label} style={{ maxWidth: '100px', margin: '5px' }} />
- ))
 
   return (
     <Page title="Create Label">
@@ -193,10 +272,16 @@ export default function CreateLabelPage() {
   <div style={{ position: 'relative', marginLeft: '60px', padding: '10px' }}>
     <img src={selectImageState.productImage} alt={selectImageState.productTitle} style={{ width: '400px', height: '300px' }} />
     {selectedLabelUrl && (
-      <img src={selectedLabelUrl} alt="Selected Label" style={{ position: 'absolute', top: 'auto',left:'12px', maxWidth: '100px',}} />
+      <img src={selectedLabelUrl} alt="Selected Label" style={{ position: 'absolute', top: 'auto',left:'11px', maxWidth: '100px',}} />
     )}
   </div>
 ) : ''}
+<hr />
+    <div>
+
+  <Button onClick={handleSave}>Save Mapping</Button>
+
+    </div>
           </Card>
           </div>
 

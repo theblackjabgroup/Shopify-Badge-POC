@@ -4,7 +4,7 @@
 generator client {
   provider = "prisma-client-js"
 }
-
+// postgresql://postgres:Nickrick@1803@localhost:5433/badge
 datasource db {
   provider = "sqlite"
   url      = "file:dev.sqlite"
@@ -21,14 +21,9 @@ model Session {
   userId      BigInt?
 }
 
-model QRCode {
-  id               Int      @id @default(autoincrement())
-  title            String
+model Label {
+  productHandle    String   @id
+  labelName        String      
+  labelUrl         String 
   shop             String
-  productId        String
-  productHandle    String
-  productVariantId String
-  destination      String
-  scans            Int      @default(0)
-  createdAt        DateTime @default(now())
 }
