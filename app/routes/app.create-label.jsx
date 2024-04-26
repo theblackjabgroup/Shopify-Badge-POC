@@ -1,5 +1,5 @@
 import React, { useState, useCallback ,useEffect} from 'react';
-import { Page,Select, TextField,Text, Icon, RadioButton, Card,Link, Button,Checkbox } from '@shopify/polaris';
+import { Page,Popover, ActionList ,InlineStack,Text, Icon, RadioButton, Card,Link, Button,Checkbox } from '@shopify/polaris';
 import { ButtonPressIcon } from '@shopify/polaris-icons';
 import { useLoaderData } from '@remix-run/react';
 import { ANNUAL_PLAN, MONTHLY_PLAN, authenticate } from '../shopify.server';
@@ -133,20 +133,12 @@ export default function CreateLabelPage() {
   // States for each checkbox
   const { plan } = useLoaderData();
   const isOnPaidPlan = plan.name !== 'Free';
-  const [formState, setFormState] = useState(plan);
   const [selectImageState,setSelectImageState]=useState(plan)
   const [isProductPageChecked, setIsProductPageChecked] = useState(false);
   const [isHomePageChecked, setIsHomePageChecked] = useState(false);
   const [isCartPageChecked, setIsCartPageChecked] = useState(false);
   const [isAllImagesOnProductPageChecked, setAllImagesOnProductPageChecked] = useState(true);
   const [isSelectedImagesonProductChecked,setSelectedImagesonProductChecked]=useState(false)
-    // State for the width and height input values
-    const [width, setWidth] = useState('');
-    const [height, setHeight] = useState('');
-  
-    // Handlers for the width and height input changes
-    const handleWidthChange = (newValue) => setWidth(newValue);
-    const handleHeightChange = (newValue) => setHeight(newValue);
   // Handlers for each checkbox
   const handleProductPageChange = useCallback((newChecked) => setIsProductPageChecked(newChecked), []);
   const handleHomePageChange = useCallback((newChecked) => setIsHomePageChecked(newChecked), []);
@@ -163,21 +155,50 @@ export default function CreateLabelPage() {
   const imageUrls = LabelProductMapping();
   const [selectedLabelUrl, setSelectedLabelUrl] = useState('');
   const [selectedLabelName,setSelectedLabelName]=useState('')
+  const [popoverActive, setPopoverActive] = useState(false);
+
+  const togglePopoverActive = useCallback(
+    () => setPopoverActive((popoverActive) => !popoverActive),
+    []
+  );
 
 
   const handleLabelChange = (labelUrl) => {
-    setSelectedLabelUrl(labelUrl);
-
-    // Find the label object by its value (URL)
     const selectedLabel = imageUrls.find(image => image.value === labelUrl);
-
-    // Log the label's URL and name to the console
     if (selectedLabel) {
-      setSelectedLabelName(selectedLabel.label)
-      // console.log('Selected label URL:', selectedLabel.value);
-      // console.log('Selected label name:', selectedLabelName);
-      // console.log(selectImageState.productId)
+      setSelectedLabelUrl(selectedLabel.value);
+      setSelectedLabelName(selectedLabel.label);
+      togglePopoverActive(); // Close popover after selection
     }
+  };
+
+  const activator = (
+    <Button fullWidth onClick={togglePopoverActive} disclosure>
+      Select Label<Icon source={ButtonPressIcon} tone="base"/>
+    </Button>
+  );
+
+   // Function to render grid of images
+   const renderGrid = (imageUrls) => {
+    // Split the array of images into chunks of 3 for grid layout
+    const rows = [];
+    for (let i = 0; i < imageUrls.length; i += 3) {
+      rows.push(imageUrls.slice(i, i + 3));
+    }
+
+    return rows.map((row, rowIndex) => (
+      <InlineStack key={rowIndex} spacing="tight">
+        {row.map((image, index) => (
+          <button
+            key={index}
+            onClick={() => handleLabelChange(image.value)}
+            style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer' }}
+          >
+            <img src={image.value} alt={image.label} style={{ maxWidth: '100px', margin: '5px' }} />
+          </button>
+        ))}
+      </InlineStack>
+    ));
   };
 
   const submit = useSubmit();
@@ -196,26 +217,6 @@ export default function CreateLabelPage() {
     setShowImages(!showImages);
   };
 
-  async function selectProduct() {
-    const products = await window.shopify.resourcePicker({
-      type: "product",
-      action: "select", // customized action verb, either 'select' or 'add',
-    });
-
-    if (products) {
-      const { images, id, variants, title, handle } = products[0];
-
-      setFormState({
-        ...formState,
-        productId: id,
-        productVariantId: variants[0].id,
-        productTitle: title,
-        productHandle: handle,
-        productAlt: images[0]?.altText,
-        productImage: images[0]?.originalSrc,
-      });
-    }
-  }
 
   async function selectProductImage() {
     const products = await window.shopify.resourcePicker({
@@ -293,49 +294,28 @@ export default function CreateLabelPage() {
                 Select and Optimize Label  
             </Text>
             <div style={{marginTop:'10px'}}>
-        <Button variant='primary' onClick={handleSelectLabelClick}>
-          Select Label<Icon source={ButtonPressIcon} tone="base"/>
-        </Button>
-        <hr />
+            <Popover
+        active={popoverActive}
+        activator={activator}
+        onClose={togglePopoverActive}
+        fullWidth
+        sectioned
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', padding: '10px' }}>
+          {imageUrls.map((image, index) => (
+            <button
+              key={index}
+              onClick={() => handleLabelChange(image.value)}
+              style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer' }}
+            >
+              <img src={image.value} alt={image.label} style={{ maxWidth: '100%', maxHeight: '60px', margin: '5px' }} />
+            </button>
+          ))}
+        </div>
+      </Popover>
       </div>
 
-      {showImages && (
-            <div>
-              {imageUrls.map((image, index) => (
-                <button key={index} onClick={() => handleLabelChange(image.value)} style={{ background: 'none', border: 'none', padding: '0', cursor: 'pointer' }}>
-                  <img src={image.value} alt={image.label} style={{ maxWidth: '100px', margin: '5px' }} />
-                </button>
-              ))}
-            </div>
-          )}
 
-            <div style={{marginTop:'10px',marginBottom:'10px'}}>
-              <Button onClick={selectProduct}>Select Products</Button>
-              <hr />
-            </div>
-            <div className='label-size' style={{marginTop:'10px',marginBottom:'10px'}}>
-            <Text><strong>Label Size</strong></Text>
-      <div style={{display:'flex', flexDirection:'row', alignItems: 'center', gap: '10px',marginBottom:'5px'}}>
-        <TextField
-          label="Width"
-          type="text"
-          value={width}
-          onChange={handleWidthChange}
-          suffix="%"
-          autoComplete="off"
-        />
-        <TextField
-          label="Height"
-          type="text"
-          value={height}
-          onChange={handleHeightChange}
-          suffix="%"
-          autoComplete="off"
-        />
-      </div>
-      <Text>The label size will adjust based on the percentages of the product/collection image.</Text>
-      <hr />
-            </div>
             <div className='label-page-selection' style={{textAlign: 'left', marginTop:'10px'}}>
               <Text as="h3" variant="bodyMd" bold><strong>Show Label On</strong></Text>
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
