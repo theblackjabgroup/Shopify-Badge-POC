@@ -7,6 +7,7 @@ import { json } from '@remix-run/node';
 import {
   useSubmit,
 } from "@remix-run/react";
+import '../styles/label.css'
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 export async function loader({ request }) {
@@ -157,6 +158,17 @@ export default function CreateLabelPage() {
   const [selectedLabelName,setSelectedLabelName]=useState('')
   const [popoverActive, setPopoverActive] = useState(false);
   const [labelStyle, setLabelStyle] = useState({});
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const handleItemClick = (index) => {
+    setActiveIndex(index); // Set the clicked item as active'
+    handlePositionChange(index + 1); 
+  };
+  const positionClasses = [
+    'top-left', 'top-center', 'top-right',
+    'middle-left', 'middle-center', 'middle-right',
+    'bottom-left', 'bottom-center', 'bottom-right'
+  ];
 
   const handlePositionChange = (position) => {
     switch(position) {
@@ -350,13 +362,17 @@ export default function CreateLabelPage() {
       </Popover>
       </div>
       <div>
-      <div style={{ display: "grid", gridTemplateColumns: "auto auto auto", backgroundColor: "#2196F3", padding: '10px' }}>
-        {Array.from({ length: 9 }, (_, i) => (
-          <div key={i} style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', border: "1px solid rgba(0, 0, 0, 0.8)", padding: '5px', fontSize: '30px', textAlign: 'center' }}>
-            <button onClick={() => handlePositionChange(i + 1)}>{i + 1}</button>
-          </div>
-        ))}
+      <div className="grid-container">
+    {Array.from({ length: 9 }, (_, index) => (
+      <div
+        key={index}
+        className={`grid-item ${positionClasses[index]} ${activeIndex === index ? 'active' : ''}`}
+        onClick={() => handleItemClick(index)}
+      >
+        <div className="grid-item-inner"></div>
       </div>
+    ))}
+  </div>
       </div>
 
 

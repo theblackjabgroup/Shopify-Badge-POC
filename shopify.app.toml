@@ -3,7 +3,7 @@
 client_id = "4ec651f5a75504841f4675e92d8366e4"
 name = "extensive-enterprise-app"
 handle = "extensive-enterprise-app-9"
-application_url = "https://template-jm-relevant-namely.trycloudflare.com"
+application_url = "https://highlight-schools-volunteers-barrier.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://template-jm-relevant-namely.trycloudflare.com/auth/callback",
-  "https://template-jm-relevant-namely.trycloudflare.com/auth/shopify/callback",
-  "https://template-jm-relevant-namely.trycloudflare.com/api/auth/callback"
+  "https://highlight-schools-volunteers-barrier.trycloudflare.com/auth/callback",
+  "https://highlight-schools-volunteers-barrier.trycloudflare.com/auth/shopify/callback",
+  "https://highlight-schools-volunteers-barrier.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]
