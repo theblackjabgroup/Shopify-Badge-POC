@@ -156,6 +156,43 @@ export default function CreateLabelPage() {
   const [selectedLabelUrl, setSelectedLabelUrl] = useState('');
   const [selectedLabelName,setSelectedLabelName]=useState('')
   const [popoverActive, setPopoverActive] = useState(false);
+  const [labelStyle, setLabelStyle] = useState({});
+
+  const handlePositionChange = (position) => {
+    switch(position) {
+      case 1:
+        setLabelStyle({ top: 'auto', left: '11px', maxWidth: '100px' });
+        break;
+      case 2:
+        setLabelStyle({ top: 'auto', left: '200px', transform: 'translateX(-50%)', maxWidth: '100px' });
+        break;
+      case 3:
+        setLabelStyle({ top: 'auto', right: '62px', maxWidth: '100px' });
+        break;
+      case 4:
+        setLabelStyle({ top: '50%', left: '11px', transform: 'translateY(-50%)', maxWidth: '100px' });
+        break;
+      case 5:
+        setLabelStyle({ top: '50%', left: '45%', transform: 'translate(-50%, -50%)', maxWidth: '100px' });
+        break;
+      case 6:
+        setLabelStyle({ top: '50%', right: '62px', transform: 'translateY(-50%)', maxWidth: '100px' });
+        break;
+      case 7:
+        setLabelStyle({ bottom: '5%', left: '11px', maxWidth: '100px' });
+        break;
+      case 8:
+        setLabelStyle({ bottom: '5%', left: '45%', transform: 'translateX(-50%)', maxWidth: '100px' });
+        break;
+      case 9:
+        setLabelStyle({ bottom: '5%', right: '62px', maxWidth: '100px' });
+        break;
+      default:
+        setLabelStyle({});
+        break;
+    }
+  }
+
 
   const togglePopoverActive = useCallback(
     () => setPopoverActive((popoverActive) => !popoverActive),
@@ -270,13 +307,13 @@ export default function CreateLabelPage() {
               </div>
             )} */}
 {selectImageState.productImage ? (
-  <div style={{ position: 'relative', marginLeft: '60px', padding: '10px' }}>
-    <img src={selectImageState.productImage} alt={selectImageState.productTitle} style={{ width: '400px', height: '300px' }} />
-    {selectedLabelUrl && (
-      <img src={selectedLabelUrl} alt="Selected Label" style={{ position: 'absolute', top: 'auto',left:'11px', maxWidth: '100px',}} />
-    )}
-  </div>
-) : ''}
+        <div style={{ position: 'relative', marginLeft: '60px', padding: '10px' }}>
+          <img src={selectImageState.productImage} alt={selectImageState.productTitle} style={{ width: '400px', height: '300px' }} />
+          {selectedLabelUrl && (
+            <img src={selectedLabelUrl} alt="Selected Label" style={{ position: 'absolute', ...labelStyle, maxWidth: '100px'}} />
+          )}
+        </div>
+      ) : ''}
 <hr />
     <div>
 
@@ -285,8 +322,6 @@ export default function CreateLabelPage() {
     </div>
           </Card>
           </div>
-
-
         </div>
         <div>
           <Card>
@@ -313,6 +348,15 @@ export default function CreateLabelPage() {
           ))}
         </div>
       </Popover>
+      </div>
+      <div>
+      <div style={{ display: "grid", gridTemplateColumns: "auto auto auto", backgroundColor: "#2196F3", padding: '10px' }}>
+        {Array.from({ length: 9 }, (_, i) => (
+          <div key={i} style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)', border: "1px solid rgba(0, 0, 0, 0.8)", padding: '5px', fontSize: '30px', textAlign: 'center' }}>
+            <button onClick={() => handlePositionChange(i + 1)}>{i + 1}</button>
+          </div>
+        ))}
+      </div>
       </div>
 
 
