@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Page, Card, Layout, ButtonGroup, Button, Text, List, InlineStack, CalloutCard, Badge, Modal, DescriptionList} from '@shopify/polaris';
 import { ANNUAL_PLAN, MONTHLY_PLAN, authenticate } from '../shopify.server';
 import { useLoaderData } from '@remix-run/react';
 import { json } from '@remix-run/node';
+import { usePlan } from './app.plancontext';
 
 export async function loader({ request }) {
   const { billing } = await authenticate.admin(request);
@@ -40,7 +41,11 @@ export default function PaymentsPage() {
   const [paidPrice, setPaidPrice] = useState(10);
   const [modalActive, setModalActive] = useState(false);
   // Determine if the user is on a paid plan
-  const isOnPaidPlan = plan.name !== 'Free';
+  // const isOnPaidPlan = plan.name !== 'Free';
+  const { isOnPaidPlan, setIsOnPaidPlan } = usePlan();
+  useEffect(() => {
+    setIsOnPaidPlan(plan.name !== 'Free'); // Update the context state
+  }, [plan, setIsOnPaidPlan]);
   const upgradeButtonUrl = `/app/upgrade?plan_item=${plan_item}`;
   const cancelButtonUrl = `/app/cancel?plan_item=${plan_item}`;
 
