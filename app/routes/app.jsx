@@ -24,6 +24,10 @@ export default function App() {
         <Link to="/app" rel="home">
           Home
         </Link>
+         <Link to="/app/getstarted">Get Started</Link>
+         <Link to="/app/labels">Labels</Link>
+        <Link to="/app/api">Add-Badge</Link>
+        <Link to="/app/badges">Badges</Link>
         <Link to="/app/additional">Additional page</Link>
         <Link to="/app/payments">Payments</Link>
       </ui-nav-menu>
