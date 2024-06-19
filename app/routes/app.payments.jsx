@@ -103,7 +103,7 @@ export default function PaymentsPage() {
   const upgradeButtonUrl = `/app/upgrade?plan_item=${plan_item}`;
   const cancelButtonUrl = `/app/cancel?plan_item=${plan_item}`;
 
-  const [activeButtonIndex, setActiveButtonIndex] = useState(plan.name !== 'Monthly Subscription' ? 0 : 1);
+  const [activeButtonIndex, setActiveButtonIndex] = useState(plan.name !== 'Monthly Subscription' ? 1 : 0);
  
 
   const handlePlanChange = (selected) => {
